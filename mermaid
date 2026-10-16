@@ -3,10 +3,12 @@ erDiagram
     PRODUCTS ||--o| WAREHOUSE : "хранится"
     SUPPLIERS ||--o{ PURCHASES : "поставляет"
     PURCHASES ||--o{ PURCHASE_ITEMS : "содержит"
-    PRODUCTS ||--o{ PURCHASE_ITEMS : "приход"
+    WAREHOUSE ||--o{ PURCHASES : "приход"
     CUSTOMERS ||--o{ SALES : "покупает"
     SALES ||--o{ SALE_ITEMS : "содержит"
-    PRODUCTS ||--o{ SALE_ITEMS : "расход"
+    WAREHOUSE ||--o{ SALES : "расход"
+    PURCHASES ||--o{ EMPLOYEE : "управляет"
+    SALES ||--o{ EMPLOYEE : "управляет"
 
     CATEGORIES {
         int CategoryID PK
@@ -48,6 +50,7 @@ erDiagram
     PURCHASES {
         int PurchaseID PK
         int SupplierID FK
+        int EmployeeID FK
         datetime PurchaseDate
         decimal TotalAmount
     }
@@ -63,6 +66,7 @@ erDiagram
     SALES {
         int SaleID PK
         int CustomerID FK
+        int EmployeeID FK
         datetime SaleDate
         decimal TotalAmount
     }
@@ -73,4 +77,13 @@ erDiagram
         int ProductID FK
         decimal Quantity
         decimal Price
+    }
+
+    EMPLOYEE {
+        int EmployeeID PK
+        int Function
+        string Name
+        string Phone
+        string Email
+        string Post
     }
