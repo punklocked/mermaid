@@ -1,0 +1,27 @@
+USE [Nabrodov_Obshepit];
+GO
+
+SELECT v.DishName                          AS [Блюдо],
+       v.Qty                               AS [Запрошено порций],
+       ISNULL(cd.[Количество], 0)          AS [Готовится в этот день],
+       CASE
+            WHEN d.IDD  IS NULL THEN N'Блюдо не найдено в меню'
+            WHEN cd.IDCD IS NULL THEN N'В этот день не готовится'
+            WHEN cd.[Количество] >= v.Qty THEN N'Блюд достаточно'
+            ELSE N'Блюд недостаточно, доступно: '
+                 + CAST(cd.[Количество] AS nvarchar(10))
+       END                                 AS [Результат]
+FROM (VALUES
+        (N'Борщ',             10),   -- достаточно
+        (N'Котлета с пюре',    8),   -- недостаточно
+        (N'Блинчики',         20),   -- граница: просят ровно столько, сколько готовят
+        (N'Тирамису',          3),   -- в среду не готовится
+        (N'Оливье',           12),   -- тоже не готовится
+        (N'Бургер фирменный',  2)    -- такого блюда нет вообще
+     ) AS v (DishName, Qty)
+LEFT JOIN dbo.Dish      d  ON d.[Название] = v.DishName
+LEFT JOIN dbo.Recipe    r  ON r.IDD = d.IDD
+LEFT JOIN dbo.Cook_Date cd ON cd.IDR = r.IDR
+                          AND cd.[День недели] = N'Среда'   -- <-- день недели меняем здесь
+ORDER BY v.DishName;
+GO
