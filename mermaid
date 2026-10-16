@@ -1,0 +1,76 @@
+erDiagram
+    CATEGORIES ||--o{ PRODUCTS : "включает"
+    PRODUCTS ||--o| WAREHOUSE : "хранится"
+    SUPPLIERS ||--o{ PURCHASES : "поставляет"
+    PURCHASES ||--o{ PURCHASE_ITEMS : "содержит"
+    PRODUCTS ||--o{ PURCHASE_ITEMS : "приход"
+    CUSTOMERS ||--o{ SALES : "покупает"
+    SALES ||--o{ SALE_ITEMS : "содержит"
+    PRODUCTS ||--o{ SALE_ITEMS : "расход"
+
+    CATEGORIES {
+        int CategoryID PK
+        string CategoryName
+    }
+
+    PRODUCTS {
+        int ProductID PK
+        int CategoryID FK
+        string ProductName
+        string UnitName
+        bit IsActive
+        datetime CreatedAt
+    }
+
+    WAREHOUSE {
+        int WarehouseItemID PK
+        int ProductID FK
+        decimal Quantity
+        decimal Price
+    }
+
+    SUPPLIERS {
+        int SupplierID PK
+        string SupplierName
+        string Phone
+        string Email
+        string Address
+    }
+
+    CUSTOMERS {
+        int CustomerID PK
+        string CustomerName
+        string Phone
+        string Email
+        string Address
+    }
+
+    PURCHASES {
+        int PurchaseID PK
+        int SupplierID FK
+        datetime PurchaseDate
+        decimal TotalAmount
+    }
+
+    PURCHASE_ITEMS {
+        int PurchaseItemID PK
+        int PurchaseID FK
+        int ProductID FK
+        decimal Quantity
+        decimal Price
+    }
+
+    SALES {
+        int SaleID PK
+        int CustomerID FK
+        datetime SaleDate
+        decimal TotalAmount
+    }
+
+    SALE_ITEMS {
+        int SaleItemID PK
+        int SaleID FK
+        int ProductID FK
+        decimal Quantity
+        decimal Price
+    }
