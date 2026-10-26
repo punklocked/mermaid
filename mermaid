@@ -9,6 +9,7 @@ erDiagram
     WAREHOUSE ||--o{ SALES : "расход"
     PURCHASES ||--o{ EMPLOYEE : "управляет"
     SALES ||--o{ EMPLOYEE : "управляет"
+    EMPLOYEE ||--o{ ROLE : "определяет"
 
     CATEGORIES {
         int CategoryID PK
@@ -81,9 +82,17 @@ erDiagram
 
     EMPLOYEE {
         int EmployeeID PK
-        int Function
+        int RoleID FK
         string Name
-        string Phone
-        string Email
+        string Login
+        string Password
         string Post
+        bit MustChangeCredentials
+        int LastReset FK
+    }
+
+    ROLE {
+        int RoleID PK
+        string RoleName
+        string RoleDesc
     }
